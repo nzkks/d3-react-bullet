@@ -1,56 +1,103 @@
-import React, {Component, PropTypes} from 'react';
-import "./tooltip.css";
+import React, { useEffect, useState } from 'react';
 
-class ToolTip extends Component {
-    render() {
-        if (!this.props.chartData) return null;
-        const chartData = this.props.chartData;
-        var x = this.props.left;
-        var y = this.props.top;
-        var width = 266;
-        var height = 144;
-        var translate = "";
-        var arrowWidth = 20;
-        var arrowHeight = 10;
-        var transformArrow = "";
+import './tooltip.css';
 
-        if (y >= height) {
-            arrowHeight = -10;
-            translate = 'translate(' + (-width/2) + 'px,' + (-height) + 'px)';
-            transformArrow = 'translate(' + (width/2 - arrowWidth) + ',' + (height + arrowHeight) +')';
-        } else if (y < height) {
-            translate = 'translate(' + (-width/2) + 'px,' + 0 + 'px)';
-            transformArrow = 'translate(' + (width/2 - arrowWidth) + ',' + arrowHeight +') rotate(180,20,0)';
-        }
+const ToolTip = ({ chartData, top: y, left: x }) => {
+  const [chartDetails, setChartDetails] = useState({
+    title: '',
+    subtitle: '',
+    measures: null,
+    ranges: null,
+    markers: null
+  });
 
-        let customStyle = {
-            top: y + arrowHeight * 2,
-            left: x,
-            width: width,
-            transform: translate
-        };
+  const [measurements, setMeasurements] = useState({
+    width: 266,
+    height: 144,
+    translate: '',
+    arrowWidth: 20,
+    arrowHeight: 10,
+    transformArrow: ''
+  });
 
-        return (
-            <div className="cover-tooltip">
-                <div className="tooltip" style={customStyle}>
-                    <svg width={width} height={height}>
-                        <polygon points="10,0  30,0  20,10" transform={transformArrow} fill="rgba(0, 0, 0, 0.5)"></polygon>
-                    </svg>
-                    <div className="tooltip-content" style={{height: height - 20}}>
-                        <div className="tooltip-row">Title: {chartData.title}</div>
-                        <div className="tooltip-row">SubTitle: {chartData.subtitle}</div>
-                        <div className="tooltip-row">Measures: {chartData.measures.join(" ")}</div>
-                        <div className="tooltip-row">Ranges: {chartData.ranges.join(" ")}</div>
-                        <div className="tooltip-row">Markers: {chartData.markers.join(" ")}</div>
-                    </div>
-                </div>
-            </div>
-        );
+  const [tooltipStyle, setTooltipStyle] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+    transform: ''
+  });
+
+  useEffect(() => {
+    if (chartData) {
+      setChartDetails({
+        title: chartData.title,
+        subtitle: chartData.subtitle,
+        measures: chartData.measures.join(' '),
+        ranges: chartData.ranges.join(' '),
+        markers: chartData.markers.join(' ')
+      });
     }
-}
+  }, [chartData]);
 
-ToolTip.propTypes = {
-    chartData: PropTypes.object
-}
+  useEffect(() => {
+    let updatedMeasurements = { ...measurements };
+
+    if (x && y) {
+      if (y >= measurements.height) {
+        updatedMeasurements.arrowHeight = -10;
+        updatedMeasurements.translate =
+          'translate(' + -updatedMeasurements.width / 2 + 'px,' + -updatedMeasurements.height + 'px)';
+        updatedMeasurements.transformArrow =
+          'translate(' +
+          (updatedMeasurements.width / 2 - updatedMeasurements.arrowWidth) +
+          ',' +
+          (updatedMeasurements.height + updatedMeasurements.arrowHeight) +
+          ')';
+      } else if (y < measurements.height) {
+        updatedMeasurements.translate = 'translate(' + -updatedMeasurements.width / 2 + 'px,' + 0 + 'px)';
+        updatedMeasurements.transformArrow =
+          'translate(' +
+          (updatedMeasurements.width / 2 - updatedMeasurements.arrowWidth) +
+          ',' +
+          updatedMeasurements.arrowHeight +
+          ') rotate(180,20,0)';
+      }
+
+      setTooltipStyle({
+        top: y + measurements.arrowHeight * 2,
+        left: x,
+        width: measurements.width,
+        transform: measurements.translate
+      });
+    }
+
+    setMeasurements(updatedMeasurements);
+  }, [y, x]);
+
+  return (
+    <>
+      {chartData ? (
+        <div className="cover-tooltip">
+          <div className="tooltip" style={tooltipStyle}>
+            <svg width={measurements.width} height={measurements.height}>
+              <polygon
+                points="10,0  30,0  20,10"
+                transform={measurements.transformArrow}
+                fill="rgba(0, 0, 0, 0.5)"
+              ></polygon>
+            </svg>
+            <div className="tooltip-content" style={{ height: measurements.height - 20 }}>
+              <div className="tooltip-row">Title: {chartDetails.title}</div>
+              <div className="tooltip-row">SubTitle: {chartDetails.subtitle}</div>
+              <div className="tooltip-row">Measures: {chartDetails.measures}</div>
+              <div className="tooltip-row">Ranges: {chartDetails.ranges}</div>
+              <div className="tooltip-row">Markers: {chartDetails.markers}</div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+};
 
 export default ToolTip;
