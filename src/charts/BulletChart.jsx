@@ -82,8 +82,7 @@ class BulletChart extends Component {
     this.params.bulletWrapper = D3node.select('.wrap');
     this.params.axisWrapper = D3node.select('.axis');
     this.params.titleWrapper = D3node.select('.title-wrap');
-    this.params.xAxis = d3.svg.axis().ticks(5);
-    this.params.xAxis.orient(vertical ? 'left' : 'bottom');
+    this.params.xAxis = vertical ? d3.axisLeft().ticks(5) : d3.axisBottom().ticks(5);
     this.update();
   }
 
