@@ -1,30 +1,26 @@
 import React from 'react';
-import './dashboard.css';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+
 import './App.css';
-import BulletGroup from './charts/BulletGroup';
-var groups = require('./data/bullets.json');
+import Dashboard from './Dashboard';
+import HARevenueTracker from './HARevenueTracker';
 
 const App = () => {
   return (
-    <div className="dashboard">
-      {groups.map((group, index) => {
-        const vertical = group.vertical || false,
-          themeName = group.theme || null,
-          title = group.title || null,
-          charts = group.charts,
-          cls = group.class;
-        return (
-          <BulletGroup
-            title={title}
-            vertical={vertical}
-            charts={charts}
-            themeName={themeName}
-            class={cls}
-            key={index}
-          ></BulletGroup>
-        );
-      })}
-    </div>
+    <Router>
+      <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'flex-end', padding: 20 }}>
+        <li>
+          <Link to={'/'}>Dashboard</Link>
+        </li>
+        <li style={{ marginLeft: 20 }}>
+          <Link to={'/ha-revenue-tracker'}>Revenue Tracker</Link>
+        </li>
+      </ul>
+      <Switch>
+        <Route exact path={'/'} component={Dashboard} />
+        <Route exact path={'/ha-revenue-tracker'} component={HARevenueTracker} />
+      </Switch>
+    </Router>
   );
 };
 

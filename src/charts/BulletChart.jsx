@@ -159,7 +159,6 @@ class BulletChart extends Component {
   }
   renderBullet() {
     function bulletWidth(x) {
-      debugger;
       var x0 = x(0);
       return function (d) {
         return Math.abs(x(d) - x0);
