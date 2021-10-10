@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import BulletChart from './BulletChart';
 import * as ReactDOM from 'react-dom';
-import '../dashboard.css';
-import ToolTip from './BulletToolTip';
 
-import { Utils } from './Utils';
-var themes = require('./theme.json');
+import '../haRevenueTrackerDashboard.css';
+import HARevenueTrackerChart from './HARevenueTrackerChart';
+import HARevenueTrackerTooltip from './HARevenueTrackerTooltip';
+import { Utils } from '../charts/Utils';
+var themes = require('./haRevenueTrackerTheme.json');
 
 class HARevenueTrackerGroup extends Component {
   constructor(props) {
@@ -181,7 +181,7 @@ class HARevenueTrackerGroup extends Component {
           {charts.map((chart, index) => {
             return (
               <div className="cover-chart" key={index} onMouseMove={event => this.onMouseMove(event, chart)}>
-                <BulletChart
+                <HARevenueTrackerChart
                   id={index}
                   key={index}
                   markers={chart.markers}
@@ -199,12 +199,16 @@ class HARevenueTrackerGroup extends Component {
                   margin={margin}
                   triangle={chart.triangle}
                   ocls={ocls}
-                ></BulletChart>
+                ></HARevenueTrackerChart>
               </div>
             );
           })}
         </div>
-        <ToolTip chartData={this.state.currentChart} top={eventPosition.top} left={eventPosition.left} />
+        <HARevenueTrackerTooltip
+          chartData={this.state.currentChart}
+          top={eventPosition.top}
+          left={eventPosition.left}
+        />
       </div>
     );
   }

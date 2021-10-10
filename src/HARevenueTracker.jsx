@@ -1,6 +1,7 @@
 import React from 'react';
-import HARevenueTrackerGroup from './charts/HARevenueTrackerGroup';
-import './dashboard.css';
+
+import HARevenueTrackerGroup from './haRevenueTracker/HARevenueTrackerGroup';
+import './haRevenueTrackerDashboard.css';
 
 const haRevenueTrackerData = require('./data/haRevenueTrackerData.json');
 
