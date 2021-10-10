@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import '../haRevenueTrackerDashboard.css';
 import HARevenueTrackerChart from './HARevenueTrackerChart';
 import HARevenueTrackerTooltip from './HARevenueTrackerTooltip';
-import { Utils } from '../charts/Utils';
+import { HARevenueTrackerUtils } from './HARevenueTrackerUtils';
 var themes = require('./haRevenueTrackerTheme.json');
 
 class HARevenueTrackerGroup extends Component {
@@ -13,7 +13,7 @@ class HARevenueTrackerGroup extends Component {
     let width = window.innerWidth,
       small = false;
 
-    if (width <= Utils.SMALL.WIDTH) {
+    if (width <= HARevenueTrackerUtils.SMALL.WIDTH) {
       small = true;
     }
     small = this.init(small);
@@ -48,10 +48,13 @@ class HARevenueTrackerGroup extends Component {
 
     if (!themeName || !themes[themeName] || !themes[themeName].group) {
       cls += ' default';
-      theme = Utils.deepMerge(this.props.default_theme, this.props.theme);
+      theme = HARevenueTrackerUtils.deepMerge(this.props.default_theme, this.props.theme);
     } else {
       cls += ' ' + themeName;
-      theme = Utils.deepMerge(Utils.deepMerge(this.props.default_theme, themes[themeName].group), this.props.theme);
+      theme = HARevenueTrackerUtils.deepMerge(
+        HARevenueTrackerUtils.deepMerge(this.props.default_theme, themes[themeName].group),
+        this.props.theme
+      );
     }
     theme = JSON.parse(JSON.stringify(theme));
     if (this.props.vertical) {
@@ -63,7 +66,7 @@ class HARevenueTrackerGroup extends Component {
         margin = theme.vertical.min.margin;
       }
     } else {
-      if (theme.horizontal.width <= Utils.SMALL.WIDTH) {
+      if (theme.horizontal.width <= HARevenueTrackerUtils.SMALL.WIDTH) {
         small = true;
       }
       max = {
@@ -103,7 +106,7 @@ class HARevenueTrackerGroup extends Component {
         if (width > this.params.theme.horizontal.width) {
           width = this.params.theme.horizontal.width;
         }
-        if (width <= Utils.SMALL.WIDTH) {
+        if (width <= HARevenueTrackerUtils.SMALL.WIDTH) {
           small = true;
           this.params.margin = this.params.theme.horizontal.min.margin;
         } else {
@@ -135,9 +138,9 @@ class HARevenueTrackerGroup extends Component {
     this.onResize = this.onResize.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
 
-    this.onResizeDebounce = Utils.debounce(this.onResize, 5);
+    this.onResizeDebounce = HARevenueTrackerUtils.debounce(this.onResize, 5);
     window.addEventListener('resize', this.onResizeDebounce);
-    this.onMouseMoveDebounce = Utils.debounce(this.onMouseMove, 10);
+    this.onMouseMoveDebounce = HARevenueTrackerUtils.debounce(this.onMouseMove, 10);
     window.addEventListener('mousemove', this.onMouseMoveDebounce);
 
     this.onResize();
@@ -215,31 +218,7 @@ class HARevenueTrackerGroup extends Component {
 }
 
 HARevenueTrackerGroup.defaultProps = {
-  vertical: true,
-
   default_theme: {
-    vertical: {
-      width: 100,
-      height: 300,
-      margin: {
-        top: 5,
-        right: 40,
-        bottom: 10,
-        left: 40
-      },
-      max: {
-        height: 300
-      },
-      min: {
-        width: 90,
-        margin: {
-          top: 5,
-          right: 10,
-          bottom: 10,
-          left: 10
-        }
-      }
-    },
     horizontal: {
       height: 75,
       width: 450,
@@ -250,7 +229,7 @@ HARevenueTrackerGroup.defaultProps = {
         left: 20
       },
       max: {
-        width: 800
+        width: '100%'
       },
       min: {
         width: 300,
@@ -263,8 +242,7 @@ HARevenueTrackerGroup.defaultProps = {
       }
     },
     item: {}
-  },
-  title: 'Bullet Chart'
+  }
 };
 
 export default HARevenueTrackerGroup;

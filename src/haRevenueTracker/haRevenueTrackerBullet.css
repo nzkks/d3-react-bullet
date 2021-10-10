@@ -29,10 +29,10 @@
   fill: #ccc;
 }
 .bullet.default .measure.s0 {
-  fill: lightsteelblue;
+  fill: #999;
 }
 .bullet.default .measure.s1 {
-  fill: steelblue;
+  fill: #ff3300;
 }
 
 .bullet.default .title {

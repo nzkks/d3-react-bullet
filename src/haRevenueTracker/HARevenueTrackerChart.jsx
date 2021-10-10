@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 import './haRevenueTrackerBullet.css';
+const bee = require('./hainesattract_bee.svg');
 
 var themes = require('./haRevenueTrackerTheme.json');
 
@@ -211,49 +212,16 @@ class HARevenueTrackerChart extends Component {
       .attr('x', reverse ? x1 : 0)
       .attr('y', extentY / 3);
 
-    let trig = props.triangle;
-
-    if (trig) {
-      if (!(trig === 'high') && !(trig === 'low')) {
-        trig = 'high';
-      }
-    }
-
-    // Update the marker lines.
-    if (props.vertical || (!props.vertical && !trig)) {
-      let marker = wrap.selectAll('line.marker').data(markerZ),
-        mval = markerZ.join(' '),
-        y1 = extentY / 6,
-        y2 = (extentY * 5) / 6,
-        cls = 'marker ';
-
-      if (theme.marker.style) {
-        y1 = 0 - extentY;
-        y2 = 0 + extentY;
-      }
-      if (trig) {
-        cls += trig + '-marker';
-      }
-      marker.enter().append('line').attr('class', cls).attr('data-marker', mval);
-      d3.transition(marker).attr('x1', x1).attr('x2', x1).attr('y1', y1).attr('y2', y2);
-    } else {
-      let trig = props.triangle,
-        rot = '',
-        marker = wrap.selectAll('path.triangle').data(markerZ);
-
-      if (trig === 'high') {
-        trig = 'high';
-        rot = 'rotate(180)';
-      }
-      marker
-        .enter()
-        .append('path')
-        .attr('d', themes.helpers.triangle.d)
-        .attr('class', 'triangle ' + trig)
-        .attr('transform', function (d, i) {
-          return 'translate(' + Number((d / domain) * extentX) + ',' + 10 + ')' + rot;
-        });
-    }
+    const marker = wrap.selectAll('path.bee').data(markerZ);
+    const g = marker.enter().append('g').attr('class', 'beeContainer');
+    g.append('svg:image')
+      .attr('xlink:href', bee)
+      .attr('width', 33)
+      .attr('height', 54)
+      .attr('class', 'bee')
+      .attr('transform', function (d, i) {
+        return 'translate(' + Number((d / domain) * extentX) + ',' + -18 + ')';
+      });
   }
   renderAxis() {
     const params = this.params,
@@ -405,7 +373,7 @@ HARevenueTrackerChart.defaultProps = {
         fill: '#b0c4de'
       },
       s1: {
-        fill: '#4682b4'
+        fill: '#ff3300'
       }
     },
     title: {

@@ -1,41 +1,19 @@
 [
   {
     "vertical": false,
-    "title": "Default + Conditional Marker/Text",
+    "title": "JULY TARGET",
     "charts": [
       {
-        "title": "Orders",
-        "subtitle": "US$, average",
-        "ranges": [
-          100,
-          200,
-          300
-        ],
+        "title": "",
+        "subtitle": "",
+        "ranges": [],
         "measures": [
           100,
           320
         ],
         "markers": [
-          275
-        ],
-        "triangle": "high"
-      },
-      {
-        "title": "Satisfaction",
-        "subtitle": "out of 5",
-        "ranges": [
-          3.5,
-          4.25,
-          5
-        ],
-        "measures": [
-          3.2,
-          4.7
-        ],
-        "markers": [
-          2.4
-        ],
-        "triangle": "low"
+          100
+        ]
       }
     ]
   }

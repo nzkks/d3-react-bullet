@@ -52,9 +52,7 @@ html * {
 .item {
   flex-basis: 320px;
   height: 40%;
-  box-shadow: 3px 3px 1px 0 rgba(230, 230, 230, 1);
   margin: 10px;
-  border-radius: 5px;
 }
 .narrow {
   flex-basis: 250px !important;
